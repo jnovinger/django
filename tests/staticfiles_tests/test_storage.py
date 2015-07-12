@@ -44,6 +44,22 @@ class TestHashedFiles(object):
         self.assertStaticRenders("path/", "/static/path/")
         self.assertStaticRenders("path/?query", "/static/path/?query")
 
+    def test_attribute_selectors(self):
+        path = "cached/attribute.css"
+        relpath = self.hashed_file_path(path)
+        self.assertEqual(relpath, "cached/attribute.379cab4506fd.css")
+        with storage.staticfiles_storage.open(relpath) as relfile:
+            content = relfile.read()
+            self.assertNotIn(b"img/relative.png", content)
+            self.assertIn(b"img[src=\"img/relative.acae32e4532b.png\"",
+                          content)
+            self.assertIn(b"img[src$=\"img/relative.acae32e4532b.png\"",
+                          content)
+            self.assertIn(b"img[src^=\"img/relative.acae32e4532b.png\"",
+                          content)
+            self.assertIn(b"img[src*=\"img/relative.acae32e4532b.png\"",
+                          content)
+
     def test_template_tag_simple_content(self):
         relpath = self.hashed_file_path("cached/styles.css")
         self.assertEqual(relpath, "cached/styles.bb84a0240107.css")

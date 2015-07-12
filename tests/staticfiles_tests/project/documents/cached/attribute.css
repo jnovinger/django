@@ -1,0 +1,5 @@
+/* Add support for https://code.djangoproject.com/ticket/19528 */
+img[src="img/relative.png"] {height: 100px;}
+img[src^="img/relative.png"] {height: 100px;}
+img[src$="img/relative.png"] {height: 100px;}
+img[src*="img/relative.png"] {height: 100px;}
